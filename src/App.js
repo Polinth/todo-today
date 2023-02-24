@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import TabMenu from './components/TabMenu';
 import { ThemeProvider, createTheme } from '@mui/material/styles';

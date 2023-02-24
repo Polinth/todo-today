@@ -5,4 +5,11 @@
 
 .inputfield {
   margin-top: 30px !important;
+  max-width: 360px;
+  justify-content: space-between;
+}
+
+.textfield {
+  max-width: 250px;
+  width: 100%;
 }

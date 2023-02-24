@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TodoList from './TodoList';
+import TodoListOld from './TodoListOld'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -62,7 +63,7 @@ export default function TabMenu() {
         <TodoList context="tomorrow"/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <TodoList context="old"/>
+        <TodoListOld context="old"/>
       </TabPanel>
     </Box>
   );

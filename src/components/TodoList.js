@@ -3,22 +3,23 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button'
 import SendIcon from '@mui/icons-material/Send';
-import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete'
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
+import ProgressButton from '../util/ProgressButton'
 
 export default function TodoList(props) {
 
-  //const [checked, setChecked] = React.useState([1]);
+  const [justDeleted, setJustDeleted] = React.useState(false);
 
   const [inputText, setInputText] = React.useState("");
 
   const [elements, setElements] = React.useState([]);
-
   React.useEffect(() => {
     const storedData = localStorage.getItem('todoItems');
     if (storedData) {
@@ -27,15 +28,17 @@ export default function TodoList(props) {
   }, []); 
 
   React.useEffect(() => {
-    if (elements.length > 0) localStorage.setItem('todoItems', JSON.stringify(elements))  
-  }, [elements]); 
+    if (elements.length > 0 || justDeleted) {
+      localStorage.setItem('todoItems', JSON.stringify(elements))  
+    }      
+  }, [elements]);  
 
 
   const handleToggle = (id) => () => {
     setElements(
       prevState => prevState.map(
         x => (
-          x.id == id
+          x.id === id
           ? {
             ...x,
             checked: !x.checked
@@ -46,12 +49,25 @@ export default function TodoList(props) {
     )
   };
 
+  const handleDeleteItem = (id) => () => {
+    setElements(
+      prevState => prevState.filter((x) =>
+      x.id !== id)
+    )
+    setJustDeleted(true)
+  }
+
   const handleChangeInputText = (e) => {
     setInputText(e.target.value)
   }
 
+  const deleteAll = () => {
+    setElements(prevState => prevState.filter((element) => element.date !== getDates(props.context)))
+    setJustDeleted(true)
+  }
+
   const handleAddItem = () => {
-    if (inputText.trim() == "") {
+    if (inputText.trim() === "") {
       return
     }
     console.log(`Adding ${inputText}`)
@@ -72,29 +88,27 @@ export default function TodoList(props) {
   return (
     <>
     <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {elements.length > 0 ? (
-      elements.map((element) => {
+      {elements.filter((element) => element.date === getDates(props.context)).length > 0 ? (
+      elements.filter((element) => element.date === getDates(props.context)).map((element) => {
         const labelId = `checkbox-list-secondary-label-${element}`;
         return (
           <ListItem
             key={element.id}
             secondaryAction={
-              <Checkbox
-                edge="end"
-                onChange={handleToggle(element.id)}
-                checked={element.checked}
-                inputProps={{ 'aria-labelledby': labelId }}
-              />
+              <IconButton onClick={handleDeleteItem(element.id)} aria-label="delete" size="large">
+                <DeleteIcon fontSize="medium" />
+              </IconButton>
             }
             disablePadding
           >
-            <ListItemButton>
-              <ListItemAvatar>
-                <Avatar
-                  alt={`Avatar n°${element + 1}`}
-                  src={`/static/images/avatar/${element + 1}.jpg`}
+            <ListItemButton onClick={handleToggle(element.id)}>
+              <ListItemIcon>
+                <Checkbox
+                  edge="start"
+                  checked={element.checked}
+                  inputProps={{ 'aria-labelledby': labelId }}
                 />
-              </ListItemAvatar>
+              </ListItemIcon>
               <ListItemText id={labelId} primary={`${element.name}`} />
             </ListItemButton>
           </ListItem>           
@@ -114,7 +128,7 @@ export default function TodoList(props) {
     </List>
     {props.context === "old" ||
     <Stack className="inputfield" direction="row" spacing={2}>
-      <TextField size="small" id="outlined-basic" label="New task" variant="outlined" value={inputText} onChange={handleChangeInputText}
+      <TextField className="textfield" width="400px" size="small" id="outlined-basic" label="New task" variant="outlined" value={inputText} onChange={handleChangeInputText}
       onKeyPress={(e) => {
         if (e.key === 'Enter') {
           handleAddItem();
@@ -125,6 +139,9 @@ export default function TodoList(props) {
         Add
       </Button>
     </Stack>}
+    
+    <ProgressButton text="Delete all (press and hold)" longPressBackspaceCallback={deleteAll} />
+
     </>
   );
 }
