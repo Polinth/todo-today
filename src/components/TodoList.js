@@ -109,7 +109,7 @@ export default function TodoList(props) {
                   inputProps={{ 'aria-labelledby': labelId }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={`${element.name}`} />
+              <ListItemText id={labelId} primary={element.checked ? <strike>{element.name}</strike> : element.name} />
             </ListItemButton>
           </ListItem>           
 

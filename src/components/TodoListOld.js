@@ -63,7 +63,7 @@ export default function TodoListOld(props) {
   }
 
   const deleteAll = () => {
-    setElements(prevState => prevState.filter((element) => element.date !== getDates(props.context)))
+    setElements(prevState => prevState.filter((element) => (element.date === getDates("today") || element.date === getDates("tomorrow"))))
     setJustDeleted(true)
   }
 
