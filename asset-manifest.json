@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/todo-today/static/css/main.e5fdd794.css",
+    "main.js": "/todo-today/static/js/main.167cc3f8.js",
+    "static/js/787.871a41e4.chunk.js": "/todo-today/static/js/787.871a41e4.chunk.js",
+    "index.html": "/todo-today/index.html",
+    "main.e5fdd794.css.map": "/todo-today/static/css/main.e5fdd794.css.map",
+    "main.167cc3f8.js.map": "/todo-today/static/js/main.167cc3f8.js.map",
+    "787.871a41e4.chunk.js.map": "/todo-today/static/js/787.871a41e4.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e5fdd794.css",
+    "static/js/main.167cc3f8.js"
+  ]
+}
